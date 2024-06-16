@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.carousel-container {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    justify-content: center;
+    background-color: #d3d3d3;
+    padding: 20px;
+}
+
+.carousel {
+    display: flex;
+    /* overflow: hidden; */
+    width: 480px; /* Adjust width as needed */
+    position: relative;
+
+}
+
+.carousel-item {
+    min-width: 100px; /* Adjust item width as needed */
+    margin: 0 10px;
+    text-align: center;
+    box-sizing: border-box;
+    transition: transform 0.5s;
+}
+
+
+.carousel-item.active {
+    background-color: #f0f0f0; /* Change to desired active background color */
+}
+
+.carousel-item.active::after {
+    content: 'test';
+    position: absolute;
+    top: -10px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid black; /* Change to desired triangle color */
+}
+
+.carousel-button {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+}
+.wrap{
+    width: 480px;
+    overflow: hidden;
+}
