@@ -1,0 +1,78 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const carousel = document.getElementById('carousel');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    let carouselItems = Array.from(carousel.children);
+
+    let currentIndex = 0;
+    const itemsToShow = 4;
+    const itemWidth = 120; // Adjust based on item width + margin
+    const totalItems = carouselItems.length;
+
+    // Clone the first and last items for infinite loop effect
+    for (let i = 0; i < itemsToShow; i++) {
+        const cloneFirst = carousel.children[i].cloneNode(true);
+        const cloneLast = carousel.children[totalItems - 1 - i].cloneNode(true);
+        carousel.appendChild(cloneFirst);
+        carousel.insertBefore(cloneLast, carousel.firstChild);
+    }
+
+    // Update carouselItems after cloning
+    carouselItems = Array.from(carousel.children);
+
+    const totalWidth = (totalItems + itemsToShow * 2) * itemWidth;
+    carousel.style.width = `${totalWidth}px`;
+
+    nextBtn.addEventListener('click', function () {
+        currentIndex++;
+        updateCarousel();
+    });
+
+    prevBtn.addEventListener('click', function () {
+        currentIndex--;
+        updateCarousel();
+    });
+
+    carouselItems.forEach((item, index) => {
+        item.addEventListener('click', function () {
+            carouselItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+        });
+    });
+
+    function updateCarousel() {
+        const offset = -currentIndex * itemWidth;
+        carousel.style.transform = `translateX(${offset}px)`;
+
+        if (currentIndex >= totalItems) {
+            currentIndex = 0;
+            carousel.style.transition = 'none';
+            carousel.style.transform = `translateX(0px)`;
+            setTimeout(() => {
+                carousel.style.transition = 'transform 0.5s ease';
+                updateActiveClass();
+            }, 50);
+        } else if (currentIndex < 0) {
+            currentIndex = totalItems - 1;
+            carousel.style.transition = 'none';
+            carousel.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+            setTimeout(() => {
+                carousel.style.transition = 'transform 0.5s ease';
+                updateActiveClass();
+            }, 50);
+        } else {
+            updateActiveClass();
+        }
+    }
+
+    function updateActiveClass() {
+        carouselItems.forEach(i => i.classList.remove('active'));
+        carouselItems[currentIndex + itemsToShow].classList.add('active');
+    }
+
+    // Initialize the carousel position
+    currentIndex = itemsToShow;
+    carousel.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+    updateActiveClass();
+});
+//same transform in css in main wrapper
